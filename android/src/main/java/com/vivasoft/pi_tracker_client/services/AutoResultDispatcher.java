@@ -1,7 +1,6 @@
 package com.vivasoft.pi_tracker_client.services;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.vivasoft.pi_tracker_client.annotations.LateInit;
@@ -25,7 +24,7 @@ public class AutoResultDispatcher {
 
   /**
    * This should be called immediately after you receive a call from method channel.
-   * */
+   */
   public void scheduleSendAutoResult(@NonNull StateBase data, @NonNull MethodChannel.Result result) {
     // first set out result channel
     this.result = result;
@@ -49,9 +48,9 @@ public class AutoResultDispatcher {
   /**
    * Call this method if you want to send result before timeout.
    * If this is called, the
-   * */
+   */
   public void sendResult(@NonNull StateBase data) {
-    if(result == null) throw new RuntimeException("Result not initialized");
+    if (result == null) throw new RuntimeException("Result not initialized");
     consumed[0] = true;
     result.success(parser.toJson(data));
   }
