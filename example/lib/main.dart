@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pi_tracker_client/models/daily_operation_hours.dart';
 import 'package:pi_tracker_client/models/package_config.dart';
 import 'package:pi_tracker_client/models/param.dart';
@@ -37,13 +34,16 @@ class _MyAppState extends State<MyApp> {
           child: TextButton(
             onPressed: () async {
               // todo
+              bool trackerPackageExists = await _piTrackerClientPlugin.trackerServiceExists();
+              print(trackerPackageExists);
+
               PackageConfig config = PackageConfig();
               config.dataPostUrl = "https://helo_guys";
               config.requestMethod = "post";
               config.dailyOperationHoursList = [
-                DailyOperationHours(DateTime.monday, [0,1, 2, 3, 4, 5, 6, 7, 8, 9]),
-                DailyOperationHours(DateTime.tuesday, [0,1, 2, 3, 4, 5, 6, 7, 8]),
-                DailyOperationHours(DateTime.wednesday, [0,1, 2, 3, 4, 5, 6, 7]),
+                DailyOperationHours(DateTime.monday, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+                DailyOperationHours(DateTime.tuesday, [0, 1, 2, 3, 4, 5, 6, 7, 8]),
+                DailyOperationHours(DateTime.wednesday, [0, 1, 2, 3, 4, 5, 6, 7]),
               ];
               config.headerParamList = [
                 Param.create('Authorization', 'Bearer AdebybduygUIYUYEGUYyguyguTYGYTfyFtfFtyfytFfDttu'),

@@ -18,6 +18,11 @@ class MethodChannelPiTrackerClient extends PiTrackerClientPlatform {
   /// ////////////////////////////
 
   @override
+  Future<bool> trackerServiceExists() async {
+    return await methodChannel.invokeMethod<bool>('trackerServiceExists') ?? false;
+  }
+
+  @override
   Future<StateBase> getMyConfig() async {
     return _extractStateBase(await methodChannel.invokeMethod<String?>('getMyConfig'));
   }

@@ -24,6 +24,10 @@ abstract class PiTrackerClientPlatform extends PlatformInterface {
   /// Start defining user methods
   /// ////////////////////////////
 
+  Future<bool> trackerServiceExists() {
+    throw UnimplementedError('pingTrackerService() has not been implemented.');
+  }
+
   Future<StateBase> getMyConfig() {
     throw UnimplementedError('getMyConfig() has not been implemented.');
   }

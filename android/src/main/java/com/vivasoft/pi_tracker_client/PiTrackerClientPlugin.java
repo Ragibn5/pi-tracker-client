@@ -6,24 +6,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.vivasoft.pi_tracker_client.services.AutoResultDispatcher;
 import com.vivasoft.pitrackercommons.constants.RequestCodes;
 import com.vivasoft.pitrackercommons.constants.ResponseCodes;
 import com.vivasoft.pitrackercommons.handlers.IncomingMessageHandler;
 import com.vivasoft.pitrackercommons.models.StateBase;
 import com.vivasoft.pitrackercommons.utils.IPCDataHelper;
-
-import javax.inject.Inject;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
@@ -40,8 +38,8 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
   private MethodChannel channel;
 
   // return refs
-  private final AutoResultDispatcher getMyConfigResult = new AutoResultDispatcher(3000);
-  private final AutoResultDispatcher setMyConfigResult = new AutoResultDispatcher(3000);
+  private final AutoResultDispatcher getMyConfigResult = new AutoResultDispatcher(1000);
+  private final AutoResultDispatcher setMyConfigResult = new AutoResultDispatcher(1000);
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -69,23 +67,25 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getMyConfig")) {
-      sendRequest(RequestCodes.RETURN_MY_CONFIG, null);
+    if (call.method.equals("trackerServiceExists")) {
+      result.success(trackerExists());
+    } else if (call.method.equals("getMyConfig")) {
+      if (connected()) sendRequest(RequestCodes.RETURN_MY_CONFIG, null);
       getMyConfigResult.scheduleSendAutoResult(
         new StateBase(
           context.getPackageName(),
-          RequestCodes.RETURN_MY_CONFIG,
+          ResponseCodes.RETURNING_YOUR_CONFIG,
           false,
           "Timeout"
         ),
         result
       );
     } else if (call.method.equals("setMyConfig")) {
-      sendRequest(RequestCodes.CREATE_MY_CONFIG, call.argument("config"));
+      if (connected()) sendRequest(RequestCodes.CREATE_MY_CONFIG, call.argument("config"));
       setMyConfigResult.scheduleSendAutoResult(
         new StateBase(
           context.getPackageName(),
-          RequestCodes.CREATE_MY_CONFIG,
+          ResponseCodes.CREATED_YOUR_CONFIG,
           false,
           "Timeout"
         ),
@@ -170,8 +170,8 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
       message.replyTo = receiver;
 
       sender.send(message);
-    } catch (RemoteException e) {
-      throw new RuntimeException(e);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -192,5 +192,22 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
         )
       );
     }
+  }
+
+  private boolean connected() {
+    return sender != null && receiver != null && serviceConnection != null;
+  }
+
+  private boolean trackerExists() {
+    PackageManager packageManager = context.getPackageManager();
+
+    PackageInfo packageInfo = null;
+    try {
+      packageInfo = packageManager.getPackageInfo("com.vivasoft.pitracker", 0);
+    } catch (PackageManager.NameNotFoundException e) {
+      e.printStackTrace();
+    }
+
+    return packageInfo != null;
   }
 }
