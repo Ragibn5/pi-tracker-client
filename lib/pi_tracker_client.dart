@@ -1,6 +1,4 @@
-import 'package:pi_tracker_client/models/package_config.dart';
-import 'package:pi_tracker_client/models/state_base.dart';
-
+import 'models/core_models.dart';
 import 'pi_tracker_client_platform_interface.dart';
 
 class PiTrackerClient {

@@ -1,23 +1,13 @@
-import 'package:pi_tracker_client/contracts/json_impl_provider.dart';
+part of 'core_models.dart';
 
-class DailyOperationHours extends JsonImplProvider {
+@JsonSerializable()
+class DailyOperationHours {
   final int dayOfWeek;
   final List<int> hours;
 
   DailyOperationHours(this.dayOfWeek, this.hours);
 
-  @override
-  dynamic toJson() {
-    return {
-      'dayOfWeek': dayOfWeek,
-      'hours': hours,
-    };
-  }
+  factory DailyOperationHours.fromJson(Map<String, dynamic> json) => _$DailyOperationHoursFromJson(json);
 
-  static DailyOperationHours fromJson(json) {
-    return DailyOperationHours(
-      json['dayOfWeek'],
-      json['hours'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$DailyOperationHoursToJson(this);
 }
