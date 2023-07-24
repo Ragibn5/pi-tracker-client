@@ -1,7 +1,6 @@
-import 'package:pi_tracker_client/models/package_config.dart';
-import 'package:pi_tracker_client/models/state_base.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+import 'models/core_models.dart';
 import 'pi_tracker_client_method_channel.dart';
 
 abstract class PiTrackerClientPlatform extends PlatformInterface {

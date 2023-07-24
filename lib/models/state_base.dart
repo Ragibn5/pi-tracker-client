@@ -1,6 +1,7 @@
-import 'package:pi_tracker_client/contracts/json_impl_provider.dart';
+part of 'core_models.dart';
 
-class StateBase extends JsonImplProvider {
+@JsonSerializable()
+class StateBase {
   final String packageName;
   final int code;
   final bool success;
@@ -8,12 +9,7 @@ class StateBase extends JsonImplProvider {
 
   StateBase({required this.packageName, required this.code, required this.success, this.data});
 
-  @override
-  toJson() {
-    return {'code': code, 'success': success, 'data': data};
-  }
+  factory StateBase.fromJson(Map<String, dynamic> json) => _$StateBaseFromJson(json);
 
-  static StateBase fromJson(json) {
-    return StateBase(packageName: json['packageName'], code: json['code'], success: json['success'], data: json['data']);
-  }
+  Map<String, dynamic> toJson() => _$StateBaseToJson(this);
 }

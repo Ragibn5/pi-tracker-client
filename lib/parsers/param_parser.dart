@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:pi_tracker_client/models/param.dart';
+import 'package:pi_tracker_client/models/core_models.dart';
 import 'package:pi_tracker_client/parsers/primitive_types_parser.dart';
 
 class ParamParser extends PrimitiveTypesParser {
@@ -11,7 +11,7 @@ class ParamParser extends PrimitiveTypesParser {
           "^([a-zA-Z]+):([a-zA-Z]+):(.+)\$");
     } else {
       List<String> parts = data.split(":");
-      return Param.create(parts[0], getParsedValue(parts[1], parts[2]));
+      return Param(parts[0], getParsedValue(parts[1], parts[2]));
     }
   }
 

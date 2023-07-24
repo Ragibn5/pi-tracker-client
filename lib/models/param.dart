@@ -1,31 +1,20 @@
-import 'package:pi_tracker_client/contracts/json_impl_provider.dart';
+part of 'core_models.dart';
 
-class Param extends JsonImplProvider {
+@JsonSerializable()
+class Param {
   final String key;
   final dynamic value;
 
-  Param._(this.key, this.value);
-
   /// Only bool, int(up to 8 bytes), double & string types are supported.
-  factory Param.create(String key, dynamic value) {
-    if (value is bool || value is int || value is double || value is String) {
-      return Param._(key, value);
-    } else {
+  Param(this.key, this.value) {
+    if (!(value is bool || value is int || value is double || value is String)) {
       throw const FormatException(
         "Invalid type: Only bool, int(up to 8 bytes), double & string types are supported.",
       );
     }
   }
 
-  @override
-  dynamic toJson() {
-    return {
-      'key': key,
-      'value': value,
-    };
-  }
+  factory Param.fromJson(Map<String, dynamic> json) => _$ParamFromJson(json);
 
-  static Param fromJson(json) {
-    return Param._(json['key'], json['value']);
-  }
+  Map<String, dynamic> toJson() => _$ParamToJson(this);
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pi_tracker_client/models/daily_operation_hours.dart';
-import 'package:pi_tracker_client/models/package_config.dart';
-import 'package:pi_tracker_client/models/param.dart';
+import 'package:pi_tracker_client/models/core_models.dart';
 import 'package:pi_tracker_client/pi_tracker_client.dart';
 
 void main() {
@@ -46,18 +44,18 @@ class _MyAppState extends State<MyApp> {
                 DailyOperationHours(DateTime.wednesday, [0, 1, 2, 3, 4, 5, 6, 7]),
               ];
               config.headerParamList = [
-                Param.create('Authorization', 'Bearer AdebybduygUIYUYEGUYyguyguTYGYTfyFtfFtyfytFfDttu'),
-                Param.create('Type', 'text/plian'),
+                Param('Authorization', 'Bearer AdebybduygUIYUYEGUYyguyguTYGYTfyFtfFtyfytFfDttu'),
+                Param('Type', 'text/plian'),
               ];
               config.queryParamList = [
-                Param.create('qint', 1),
-                Param.create('qdouble', 1.1),
-                Param.create('qstring', 'a string'),
+                Param('qint', 1),
+                Param('qdouble', 1.1),
+                Param('qstring', 'a string'),
               ];
               config.requestBodyParamList = [
-                Param.create('bint', 1),
-                Param.create('bdouble', 1.1),
-                Param.create('bstring', 'a string'),
+                Param('bint', 1),
+                Param('bdouble', 1.1),
+                Param('bstring', 'a string'),
               ];
               var result = await _piTrackerClientPlugin.setMyConfig(config);
               print(result);
