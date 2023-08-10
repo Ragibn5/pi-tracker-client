@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pi_tracker_client/constants/response_codes.dart';
 import 'package:pi_tracker_client/models/core_models.dart';
 import 'package:pi_tracker_client/pi_tracker_client.dart';
 
@@ -39,9 +40,13 @@ class _MyAppState extends State<MyApp> {
               config.dataPostUrl = "https://helo_guys";
               config.requestMethod = "post";
               config.dailyOperationHoursList = [
-                DailyOperationHours(DateTime.monday, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-                DailyOperationHours(DateTime.tuesday, [0, 1, 2, 3, 4, 5, 6, 7, 8]),
-                DailyOperationHours(DateTime.wednesday, [0, 1, 2, 3, 4, 5, 6, 7]),
+                DailyOperationHours(DateTime.monday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
+                DailyOperationHours(DateTime.tuesday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
+                DailyOperationHours(DateTime.wednesday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
+                DailyOperationHours(DateTime.thursday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
+                DailyOperationHours(DateTime.friday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
+                DailyOperationHours(DateTime.saturday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
+                DailyOperationHours(DateTime.sunday, [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]),
               ];
               config.headerParamList = [
                 Param('Authorization', 'Bearer AdebybduygUIYUYEGUYyguyguTYGYTfyFtfFtyfytFfDttu'),
@@ -58,10 +63,15 @@ class _MyAppState extends State<MyApp> {
                 Param('bstring', 'a string'),
               ];
               var result = await _piTrackerClientPlugin.setMyConfig(config);
-              print(result);
+              if(result.code == ResponseCodes.permissionsNotGranted){
+                var activityOpenRes = _piTrackerClientPlugin.requestOpenPermissionManagerActivity();
+                print(activityOpenRes);
+              } else if(result.code == ResponseCodes.createdYourConfig){
+                print("Config created: ${result.data}");
+              }
 
-              var myConfig = await _piTrackerClientPlugin.getMyConfig();
-              print(myConfig);
+              /*var myConfig = await _piTrackerClientPlugin.getMyConfig();
+              print("My config: ${myConfig.data}");*/
             },
             child: const Text("Send Config"),
           ),

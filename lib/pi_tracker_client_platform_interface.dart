@@ -34,4 +34,8 @@ abstract class PiTrackerClientPlatform extends PlatformInterface {
   Future<StateBase> setMyConfig(PackageConfig config) {
     throw UnimplementedError('setMyConfig(config) has not been implemented.');
   }
+
+  Future<StateBase> requestOpenPermissionManagerActivity() async {
+    throw UnimplementedError('requestOpenPermissionManagerActivity() has not been implemented.');
+  }
 }

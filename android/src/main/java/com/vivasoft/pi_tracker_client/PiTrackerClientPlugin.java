@@ -38,8 +38,9 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
   private MethodChannel channel;
 
   // return refs
-  private final AutoResultDispatcher getMyConfigResult = new AutoResultDispatcher(1000);
-  private final AutoResultDispatcher setMyConfigResult = new AutoResultDispatcher(1000);
+  private final AutoResultDispatcher getMyConfigResult = new AutoResultDispatcher(2000);
+  private final AutoResultDispatcher setMyConfigResult = new AutoResultDispatcher(2000);
+  private final AutoResultDispatcher requestOpenPermissionManagerActivityResult = new AutoResultDispatcher(2000);
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -91,6 +92,17 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
         ),
         result
       );
+    } else if (call.method.equals("requestOpenPermissionManagerActivity")) {
+      if (connected()) sendRequest(RequestCodes.OPEN_PERMISSION_MANAGER_ACTIVITY, null);
+      requestOpenPermissionManagerActivityResult.scheduleSendAutoResult(
+        new StateBase(
+          context.getPackageName(),
+          ResponseCodes.OPENED_PERMISSION_MANAGER_ACTIVITY,
+          false,
+          "Timeout"
+        ),
+        result
+      );
     } else {
       result.notImplemented();
     }
@@ -109,10 +121,12 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
       }
     };
 
+    Looper myLooper = Looper.myLooper();
+    assert myLooper != null;
     receiver = new Messenger(
       new IncomingMessageHandler(
-        Looper.myLooper(),
-        message -> handleResponseCases(message)
+        myLooper,
+        this::handleResponseCases
       )
     );
 
@@ -143,6 +157,14 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
       case ResponseCodes.CREATED_YOUR_CONFIG: {
         sendResultToChannel(
           ResponseCodes.CREATED_YOUR_CONFIG,
+          IPCDataHelper.getDataFor(message),
+          setMyConfigResult
+        );
+        break;
+      }
+      case ResponseCodes.PERMISSIONS_NOT_GRANTED: {
+        sendResultToChannel(
+          ResponseCodes.PERMISSIONS_NOT_GRANTED,
           IPCDataHelper.getDataFor(message),
           setMyConfigResult
         );
