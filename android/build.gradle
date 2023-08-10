@@ -36,7 +36,7 @@ android {
 
 dependencies {
     // piTrackerCommons lib
-    implementation 'com.github.Ragibn5:PiTrackerCommons:v0.0.14'
+    implementation 'com.github.Ragibn5:PiTrackerCommons:v0.0.16'
 
     // serializer/deserializer
     implementation 'com.google.code.gson:gson:2.10.1'

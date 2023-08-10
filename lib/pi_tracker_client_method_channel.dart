@@ -18,7 +18,7 @@ class MethodChannelPiTrackerClient extends PiTrackerClientPlatform {
 
   @override
   Future<bool> trackerServiceExists() async {
-    return await methodChannel.invokeMethod<bool>('trackerServiceExists') ?? false;
+    return await methodChannel.invokeMethod<bool?>('trackerServiceExists') ?? false;
   }
 
   @override
@@ -32,6 +32,11 @@ class MethodChannelPiTrackerClient extends PiTrackerClientPlatform {
       'setMyConfig',
       {'config': jsonEncode(config)},
     ));
+  }
+
+  @override
+  Future<StateBase> requestOpenPermissionManagerActivity() async {
+    return _extractStateBase(await methodChannel.invokeMethod<String?>('requestOpenPermissionManagerActivity'));
   }
 
   StateBase _extractStateBase(String? result) {

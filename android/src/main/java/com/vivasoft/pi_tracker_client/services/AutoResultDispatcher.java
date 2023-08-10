@@ -47,7 +47,6 @@ public class AutoResultDispatcher {
 
   /**
    * Call this method if you want to send result before timeout.
-   * If this is called, the
    */
   public void sendResult(@NonNull StateBase data) {
     if (result == null) throw new RuntimeException("Result not initialized");
