@@ -22,6 +22,12 @@ class MockPiTrackerClientPlatform with MockPlatformInterfaceMixin implements PiT
     // TODO: implement setMyConfig
     throw UnimplementedError();
   }
+
+  @override
+  Future<StateBase> requestOpenPermissionManagerActivity() {
+    // TODO: implement requestOpenPermissionManagerActivity
+    throw UnimplementedError();
+  }
 }
 
 void main() {

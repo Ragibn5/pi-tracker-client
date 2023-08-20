@@ -6,41 +6,92 @@ part of 'core_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DailyOperationHours _$DailyOperationHoursFromJson(Map<String, dynamic> json) => DailyOperationHours(
+Map<String, dynamic> _$ApiConfigToJson(ApiConfig instance) => <String, dynamic>{
+      'postUrl': instance.postUrl,
+      'authToken': instance.authToken,
+      'queryParamList': instance.queryParamList,
+      'headerParamList': instance.headerParamList,
+      'requestBodyParamList': instance.requestBodyParamList,
+    };
+
+DailyOperationHours _$DailyOperationHoursFromJson(Map<String, dynamic> json) =>
+    DailyOperationHours(
       json['dayOfWeek'] as int,
       (json['hours'] as List<dynamic>).map((e) => e as int).toList(),
     );
 
-Map<String, dynamic> _$DailyOperationHoursToJson(DailyOperationHours instance) => <String, dynamic>{
+Map<String, dynamic> _$DailyOperationHoursToJson(
+        DailyOperationHours instance) =>
+    <String, dynamic>{
       'dayOfWeek': instance.dayOfWeek,
       'hours': instance.hours,
     };
 
-PackageConfig _$PackageConfigFromJson(Map<String, dynamic> json) => PackageConfig()
-  ..dataPostUrl = json['dataPostUrl'] as String?
-  ..requestMethod = json['requestMethod'] as String?
-  ..authToken = json['authToken'] as String?
-  ..refreshToken = json['refreshToken'] as String?
-  ..locationFetchPulseTime = json['locationFetchPulseTime'] as int?
-  ..dailyOperationHoursList = (json['dailyOperationHoursList'] as List<dynamic>?)
-      ?.map((e) => DailyOperationHours.fromJson(e as Map<String, dynamic>))
-      .toList()
-  ..queryParamList = (json['queryParamList'] as List<dynamic>?)?.map((e) => Param.fromJson(e as Map<String, dynamic>)).toList()
-  ..headerParamList =
-      (json['headerParamList'] as List<dynamic>?)?.map((e) => Param.fromJson(e as Map<String, dynamic>)).toList()
-  ..requestBodyParamList =
-      (json['requestBodyParamList'] as List<dynamic>?)?.map((e) => Param.fromJson(e as Map<String, dynamic>)).toList();
+LocationPostConfig _$LocationPostConfigFromJson(Map<String, dynamic> json) =>
+    LocationPostConfig(
+      postUrl: json['postUrl'] as String,
+      authToken: json['authToken'] as String?,
+      queryParamList: (json['queryParamList'] as List<dynamic>?)
+          ?.map((e) => Param.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      headerParamList: (json['headerParamList'] as List<dynamic>?)
+          ?.map((e) => Param.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      requestBodyParamList: (json['requestBodyParamList'] as List<dynamic>?)
+          ?.map((e) => Param.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      dailyOperationHoursList: (json['dailyOperationHoursList']
+              as List<dynamic>)
+          .map((e) => DailyOperationHours.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
-Map<String, dynamic> _$PackageConfigToJson(PackageConfig instance) => <String, dynamic>{
-      'dataPostUrl': instance.dataPostUrl,
-      'requestMethod': instance.requestMethod,
+Map<String, dynamic> _$LocationPostConfigToJson(LocationPostConfig instance) =>
+    <String, dynamic>{
+      'postUrl': instance.postUrl,
       'authToken': instance.authToken,
-      'refreshToken': instance.refreshToken,
-      'locationFetchPulseTime': instance.locationFetchPulseTime,
-      'dailyOperationHoursList': instance.dailyOperationHoursList,
       'queryParamList': instance.queryParamList,
       'headerParamList': instance.headerParamList,
       'requestBodyParamList': instance.requestBodyParamList,
+      'dailyOperationHoursList': instance.dailyOperationHoursList,
+    };
+
+LogPostConfig _$LogPostConfigFromJson(Map<String, dynamic> json) =>
+    LogPostConfig(
+      postUrl: json['postUrl'] as String,
+      authToken: json['authToken'] as String?,
+      queryParamList: (json['queryParamList'] as List<dynamic>?)
+          ?.map((e) => Param.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      headerParamList: (json['headerParamList'] as List<dynamic>?)
+          ?.map((e) => Param.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      requestBodyParamList: (json['requestBodyParamList'] as List<dynamic>?)
+          ?.map((e) => Param.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$LogPostConfigToJson(LogPostConfig instance) =>
+    <String, dynamic>{
+      'postUrl': instance.postUrl,
+      'authToken': instance.authToken,
+      'queryParamList': instance.queryParamList,
+      'headerParamList': instance.headerParamList,
+      'requestBodyParamList': instance.requestBodyParamList,
+    };
+
+PackageConfig _$PackageConfigFromJson(Map<String, dynamic> json) =>
+    PackageConfig(
+      logPostConfig:
+          LogPostConfig.fromJson(json['logPostConfig'] as Map<String, dynamic>),
+      locationPostConfig: LocationPostConfig.fromJson(
+          json['locationPostConfig'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PackageConfigToJson(PackageConfig instance) =>
+    <String, dynamic>{
+      'logPostConfig': instance.logPostConfig,
+      'locationPostConfig': instance.locationPostConfig,
     };
 
 Param _$ParamFromJson(Map<String, dynamic> json) => Param(
