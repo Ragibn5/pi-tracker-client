@@ -16,10 +16,12 @@ import android.os.Messenger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.vivasoft.pi_tracker_client.services.AutoResultDispatcher;
 import com.vivasoft.pitrackercommons.constants.RequestCodes;
 import com.vivasoft.pitrackercommons.constants.ResponseCodes;
 import com.vivasoft.pitrackercommons.handlers.IncomingMessageHandler;
+import com.vivasoft.pitrackercommons.models.PackageConfig;
 import com.vivasoft.pitrackercommons.models.StateBase;
 import com.vivasoft.pitrackercommons.utils.IPCDataHelper;
 
@@ -82,7 +84,15 @@ public class PiTrackerClientPlugin implements FlutterPlugin, MethodCallHandler {
         result
       );
     } else if (call.method.equals("setMyConfig")) {
-      if (connected()) sendRequest(RequestCodes.CREATE_MY_CONFIG, call.argument("config"));
+      Gson parser = new Gson();
+
+      // obtain config, and add package name to the log and location config.
+      // we are adding it here because we do not want it to be added by the user.
+      PackageConfig config = parser.fromJson(((String) call.argument("config")), PackageConfig.class);
+      config.getLogPostConfig().setPackageName(context.getPackageName());
+      config.getLocationPostConfig().setPackageName(context.getPackageName());
+
+      if (connected()) sendRequest(RequestCodes.CREATE_MY_CONFIG, parser.toJson(config));
       setMyConfigResult.scheduleSendAutoResult(
         new StateBase(
           context.getPackageName(),

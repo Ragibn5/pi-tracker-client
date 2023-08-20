@@ -2,21 +2,11 @@ part of 'core_models.dart';
 
 @JsonSerializable()
 class PackageConfig {
-  String? dataPostUrl;
-  String? requestMethod;
+  final LogPostConfig logPostConfig;
+  final LocationPostConfig locationPostConfig;
 
-  String? authToken;
-  String? refreshToken;
 
-  int? locationFetchPulseTime;
-  List<DailyOperationHours>? dailyOperationHoursList;
-
-  List<Param>? queryParamList;
-  List<Param>? headerParamList;
-  List<Param>? requestBodyParamList;
-
-  // Required empty constructor
-  PackageConfig();
+  PackageConfig({required this.logPostConfig, required this.locationPostConfig});
 
   factory PackageConfig.fromJson(Map<String, dynamic> json) => _$PackageConfigFromJson(json);
 
